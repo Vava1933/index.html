@@ -1,0 +1,1435 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎮 Jornada do Aniversário - Abdul</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #6a11cb;
+            --secondary: #2575fc;
+            --accent: #ff4e50;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --success: #28a745;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: var(--dark);
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 800px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .header {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header h1 {
+            font-size: 2.8rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .level {
+            display: none;
+            padding: 40px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .active {
+            display: block;
+        }
+
+        .game-title {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 2rem;
+            position: relative;
+            padding-bottom: 15px;
+        }
+
+        .game-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 2px;
+        }
+
+        .input-group {
+            margin: 25px 0;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 15px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            margin-bottom: 10px;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.2);
+            outline: none;
+        }
+
+        .btn {
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            color: white;
+            border: none;
+            padding: 16px 40px;
+            font-size: 1.2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+            width: 100%;
+            margin-top: 10px;
+            letter-spacing: 1px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(106, 17, 203, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(-1px);
+        }
+
+        .btn-small {
+            padding: 12px 25px;
+            font-size: 1rem;
+            width: auto;
+        }
+
+        .message {
+            padding: 20px;
+            border-radius: 12px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .success {
+            background-color: rgba(40, 167, 69, 0.15);
+            color: var(--success);
+            border-left: 5px solid var(--success);
+        }
+
+        .error {
+            background-color: rgba(255, 78, 80, 0.15);
+            color: var(--accent);
+            border-left: 5px solid var(--accent);
+        }
+
+        .info {
+            background-color: rgba(37, 117, 252, 0.15);
+            color: var(--secondary);
+            border-left: 5px solid var(--secondary);
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            margin-bottom: 30px;
+        }
+
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+            border-color: var(--primary);
+        }
+
+        .game-card i {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 15px;
+        }
+
+        .game-card h3 {
+            color: var(--dark);
+            margin-bottom: 10px;
+        }
+
+        .game-card p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .selected {
+            border-color: var(--accent);
+            background: linear-gradient(45deg, rgba(255, 78, 80, 0.05), transparent);
+        }
+
+        /* Jogo da Memória */
+        .memory-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .memory-card {
+            height: 100px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            transition: all 0.3s;
+            transform-style: preserve-3d;
+            position: relative;
+        }
+
+        .memory-card.flipped {
+            background: white;
+            color: var(--dark);
+            transform: rotateY(180deg);
+        }
+
+        .memory-card.matched {
+            background: var(--success);
+            transform: scale(0.95);
+        }
+
+        /* Jogo da Velha */
+        .tic-tac-toe-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin: 30px auto;
+            max-width: 400px;
+        }
+
+        .tic-tac-toe-cell {
+            aspect-ratio: 1;
+            background: white;
+            border: 3px solid var(--primary);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tic-tac-toe-cell:hover {
+            background: rgba(106, 17, 203, 0.1);
+        }
+
+        .tic-tac-toe-cell.x {
+            color: var(--accent);
+        }
+
+        .tic-tac-toe-cell.o {
+            color: var(--secondary);
+        }
+
+        /* Jogo da Sequência */
+        .sequence-container {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .sequence-display {
+            font-size: 3rem;
+            font-weight: bold;
+            color: var(--primary);
+            margin: 30px 0;
+            min-height: 80px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sequence-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .sequence-btn {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: none;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .sequence-btn:hover {
+            transform: scale(1.1);
+        }
+
+        /* Jogo dos Emojis */
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin: 30px 0;
+        }
+
+        .emoji-card {
+            height: 100px;
+            border-radius: 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 3.5rem;
+            cursor: pointer;
+            background: rgba(106, 17, 203, 0.1);
+            transition: all 0.2s;
+        }
+
+        .emoji-card.selected-emoji {
+            background: var(--accent);
+            color: white;
+            transform: scale(0.95);
+        }
+
+        /* Quiz Rápido */
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            text-align: center;
+            color: var(--dark);
+            line-height: 1.5;
+        }
+
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .quiz-option {
+            padding: 18px 25px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .quiz-option:hover {
+            background: rgba(106, 17, 203, 0.05);
+            border-color: var(--primary);
+        }
+
+        .quiz-option.selected {
+            background: rgba(106, 17, 203, 0.1);
+            border-color: var(--primary);
+            font-weight: bold;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            border-radius: 5px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .game-stats {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            font-weight: bold;
+            color: var(--dark);
+        }
+
+        .final-message {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .final-message h2 {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+
+        .final-message p {
+            font-size: 1.3rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .signature {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px dashed #ddd;
+            font-style: italic;
+            color: var(--secondary);
+        }
+
+        .footer-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .games-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .memory-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .level {
+                padding: 25px;
+            }
+            
+            .tic-tac-toe-grid {
+                max-width: 300px;
+            }
+            
+            .sequence-btn {
+                width: 70px;
+                height: 70px;
+                font-size: 1.8rem;
+            }
+        }
+
+        .password-hint {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 5px;
+            text-align: center;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Cabeçalho -->
+        <div class="header">
+            <h1><i class="fas fa-gamepad"></i> JORNADA DO ANIVERSÁRIO</h1>
+            <p>Complete os desafios para desbloquear sua mensagem especial!</p>
+        </div>
+
+        <!-- Nível 1: Senha -->
+        <div id="level1" class="level active">
+            <h2 class="game-title">NÍVEL 1: SENHA SECRETA</h2>
+            <div class="game-container">
+                <p>Para iniciar esta jornada, você precisa da senha mágica:</p>
+                <div class="input-group">
+                    <input type="text" id="password" placeholder="Digite a senha secreta...">
+                    <div class="password-hint">Dica: É o nome da pessoa mais especial + "maravilha"</div>
+                </div>
+                <button class="btn" onclick="checkPassword()"><i class="fas fa-unlock-alt"></i> DESBLOQUEAR JOGOS</button>
+                <p id="passwordError" class="message error" style="display:none;">❌ Senha incorreta! Lembre-se: "Valquíria maravilha"</p>
+            </div>
+        </div>
+
+        <!-- Nível 2: Perguntas -->
+        <div id="level2" class="level">
+            <h2 class="game-title">NÍVEL 2: TESTE DE AMIZADE</h2>
+            <div class="game-container">
+                <p>Responda estas perguntas sobre a pessoa que criou este jogo:</p>
+                <div id="questionsContainer"></div>
+                <button class="btn" onclick="checkAnswers()"><i class="fas fa-check-circle"></i> VERIFICAR RESPOSTAS</button>
+                <p id="questionsError" class="message error" style="display:none;">❌ Responda todas as perguntas para prosseguir!</p>
+            </div>
+        </div>
+
+        <!-- Nível 3: Escolha de Jogos -->
+        <div id="level3" class="level">
+            <h2 class="game-title">NÍVEL 3: DESAFIO DOS 5 JOGOS</h2>
+            <div class="game-container">
+                <p>Escolha um dos jogos abaixo para continuar. Complete qualquer um para avançar!</p>
+                
+                <div class="games-grid" id="gamesGrid">
+                    <!-- Os jogos serão inseridos aqui via JavaScript -->
+                </div>
+                
+                <div id="selectedGameContainer" style="display: none;">
+                    <div id="gameContent"></div>
+                    <button class="btn" onclick="goBackToGameSelection()"><i class="fas fa-arrow-left"></i> VOLTAR PARA SELEÇÃO DE JOGOS</button>
+                </div>
+                
+                <div id="gameSelection" style="text-align: center; margin-top: 20px;">
+                    <p>Selecione um jogo acima para começar!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Nível Final -->
+        <div id="levelFinal" class="level">
+            <h2 class="game-title">🎉 MISSÃO CUMPRIDA! 🎉</h2>
+            <div class="game-container">
+                <p class="message success"><i class="fas fa-trophy"></i> <strong>"Ele fez de novo! Parabéns aniversariante Abdul!"</strong></p>
+                <p>Para confirmar que você completou todos os desafios e receber sua mensagem especial:</p>
+                <div class="input-group">
+                    <input type="text" id="confirmation" placeholder="Digite SIM (em maiúsculas)...">
+                </div>
+                <button class="btn" onclick="finalConfirmation()"><i class="fas fa-gift"></i> RECEBER MENSAGEM ESPECIAL</button>
+            </div>
+        </div>
+
+        <!-- Mensagem Final -->
+        <div id="finalMessage" class="level">
+            <div class="final-message">
+                <h2>🎂 FELIZ ANIVERSÁRIO, ABDUL! 🎂</h2>
+                
+                <div class="message info">
+                    <p><i class="fas fa-star"></i> Parabéns por completar todos os desafios </p>
+                    <p>Você provou ser um verdadeiro mestre dos jogos e um amigo incrível.</p>
+                </div>
+                <div class="signature">
+                    <h3>Com todo o carinho do mundo,</h3>
+                    <p style="font-size: 1.5rem; color: var(--primary);">Seu amigo que te admira muito</p>
+                    <p><i class="fas fa-heart" style="color: var(--accent);"></i></p>
+                </div>
+                
+                <div class="footer-buttons">
+                    <button class="btn btn-small" onclick="restartGame()"><i class="fas fa-redo"></i> JOGAR NOVAMENTE</button>
+                    <button class="btn btn-small" style="background: var(--accent);" onclick="exitGame()"><i class="fas fa-door-open"></i> SAIR DO JOGO</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Barra de Progresso -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="game-stats">
+            <div>Fase: <span id="currentLevel">1</span>/5</div>
+            <div>Jogos Completos: <span id="gamesCompleted">0</span>/5</div>
+        </div>
+    </div>
+
+    <script>
+        // ================= CONFIGURAÇÃO INICIAL =================
+        // Perguntas personalizadas sobre você
+        const questions = [
+            {
+                question: "Quem é a menina mais bonita do mundo?",
+                options: ["Valquíria", "Valquíria Amone", "Valquíria Nhacuongue"],
+                correct: ["Valquíria", "Valquíria Amone", "Valquíria Nhacuongue"]
+            },
+            {
+                question: "Quem eu mais amo nesta vida?",
+                options: ["Valquíria", "Minha mãe", "Deus"],
+                correct: ["Valquíria", "Minha mãe", "Deus"]
+            },
+            {
+                question: "O que eu faço todos os dias ao acordar?",
+                options: ["Penso na Valquíria 3 vezes", "Tomar café", "Checar o celular"],
+                correct: ["Penso na Valquíria 3 vezes"]
+            },
+            {
+                question: "Qual é o meu maior sonho?",
+                options: ["Casar com a Valquíria", "Viajar o mundo", "Ser bem sucedido"],
+                correct: ["Casar com a Valquíria"]
+            },
+            {
+                question: "O que me faz mais feliz?",
+                options: ["Ver a Valquíria sorrir", "Comprar coisas novas", "Sair com amigos"],
+                correct: ["Ver a Valquíria sorrir"]
+            }
+        ];
+
+        // Lista de jogos disponíveis
+        const games = [
+            { 
+                id: 1, 
+                name: "Jogo da Memória", 
+                icon: "fas fa-brain",
+                description: "Encontre os pares de emojis iguais",
+                color: "#6a11cb"
+            },
+            { 
+                id: 2, 
+                name: "Jogo da Velha", 
+                icon: "fas fa-times",
+                description: "Clássico jogo contra o computador",
+                color: "#2575fc"
+            },
+            { 
+                id: 3, 
+                name: "Sequência Numérica", 
+                icon: "fas fa-sort-numeric-up",
+                description: "Repita a sequência de números",
+                color: "#ff4e50"
+            },
+            { 
+                id: 4, 
+                name: "Encontre o Emoji", 
+                icon: "fas fa-smile",
+                description: "Selecione o emoji correto",
+                color: "#28a745"
+            },
+            { 
+                id: 5, 
+                name: "Quiz Rápido", 
+                icon: "fas fa-question-circle",
+                description: "Responda perguntas sobre Valquíria",
+                color: "#ff9d00"
+            }
+        ];
+
+        // Variáveis do jogo
+        let currentLevel = 1;
+        let gamesCompleted = 0;
+        let selectedGameId = null;
+        let memoryCards = [];
+        let memoryFlippedCards = [];
+        let ticTacToeBoard = ['', '', '', '', '', '', '', '', ''];
+        let ticTacToeCurrentPlayer = 'X';
+        let sequencePattern = [];
+        let sequencePlayerInput = [];
+        let emojiToFind = '';
+        let quizQuestions = [];
+        let quizCurrentQuestion = 0;
+        let quizScore = 0;
+
+        // ================= FUNÇÕES DO JOGO =================
+        
+        // Atualizar barra de progresso
+        function updateProgress() {
+            const totalSteps = 4; // Senha + Perguntas + Jogos + Confirmação
+            const progress = (currentLevel / totalSteps) * 100;
+            document.getElementById('progressFill').style.width = `${progress}%`;
+            document.getElementById('currentLevel').textContent = currentLevel;
+            document.getElementById('gamesCompleted').textContent = gamesCompleted;
+        }
+
+        // Navegar entre níveis
+        function showLevel(levelId) {
+            // Esconder todos os níveis
+            document.querySelectorAll('.level').forEach(level => {
+                level.classList.remove('active');
+            });
+            
+            // Mostrar o nível especificado
+            document.getElementById(levelId).classList.add('active');
+            
+            // Atualizar progresso
+            updateProgress();
+        }
+
+        // ================= NÍVEL 1: SENHA =================
+        function checkPassword() {
+            const passwordInput = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            
+            if (passwordInput.toLowerCase() === "valquíria maravilha") {
+                passwordError.style.display = 'none';
+                currentLevel = 2;
+                loadQuestions();
+                showLevel('level2');
+            } else {
+                passwordError.style.display = 'block';
+                // Efeito visual de erro
+                document.getElementById('password').style.borderColor = '#ff4e50';
+                document.getElementById('password').style.boxShadow = '0 0 0 3px rgba(255, 78, 80, 0.2)';
+                setTimeout(() => {
+                    document.getElementById('password').style.borderColor = '#e0e0e0';
+                    document.getElementById('password').style.boxShadow = 'none';
+                }, 1000);
+            }
+        }
+
+        // ================= NÍVEL 2: PERGUNTAS =================
+        function loadQuestions() {
+            const container = document.getElementById('questionsContainer');
+            container.innerHTML = '';
+            
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'quiz-question';
+                questionDiv.innerHTML = `<p>${index + 1}. ${q.question}</p>`;
+                
+                const optionsDiv = document.createElement('div');
+                optionsDiv.className = 'quiz-options';
+                
+                q.options.forEach(option => {
+                    const optionDiv = document.createElement('div');
+                    optionDiv.className = 'quiz-option';
+                    optionDiv.textContent = option;
+                    optionDiv.dataset.value = option;
+                    
+                    // Permitir múltipla seleção se houver múltiplas respostas corretas
+                    optionDiv.addEventListener('click', function() {
+                        if (q.correct.length > 1) {
+                            // Para múltipla seleção
+                            this.classList.toggle('selected');
+                        } else {
+                            // Para seleção única
+                            document.querySelectorAll(`#questionsContainer .quiz-option`).forEach(opt => {
+                                if (opt.parentElement === optionsDiv) {
+                                    opt.classList.remove('selected');
+                                }
+                            });
+                            this.classList.add('selected');
+                        }
+                    });
+                    
+                    optionsDiv.appendChild(optionDiv);
+                });
+                
+                container.appendChild(questionDiv);
+                container.appendChild(optionsDiv);
+            });
+        }
+
+        function checkAnswers() {
+            let allAnswered = true;
+            
+            questions.forEach((q, index) => {
+                const selectedOptions = document.querySelectorAll(`#questionsContainer .quiz-option.selected`);
+                const questionOptions = document.querySelectorAll(`#questionsContainer .quiz-option`);
+                
+                if (selectedOptions.length === 0) {
+                    allAnswered = false;
+                }
+            });
+            
+            if (allAnswered) {
+                document.getElementById('questionsError').style.display = 'none';
+                currentLevel = 3;
+                loadGameSelection();
+                showLevel('level3');
+            } else {
+                document.getElementById('questionsError').style.display = 'block';
+            }
+        }
+
+        // ================= NÍVEL 3: SELEÇÃO DE JOGOS =================
+        function loadGameSelection() {
+            const gamesGrid = document.getElementById('gamesGrid');
+            gamesGrid.innerHTML = '';
+            
+            games.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.dataset.id = game.id;
+                gameCard.innerHTML = `
+                    <i class="${game.icon}" style="color: ${game.color};"></i>
+                    <h3>${game.name}</h3>
+                    <p>${game.description}</p>
+                `;
+                
+                gameCard.addEventListener('click', function() {
+                    // Remover seleção de todos os cards
+                    document.querySelectorAll('.game-card').forEach(card => {
+                        card.classList.remove('selected');
+                    });
+                    
+                    // Selecionar este card
+                    this.classList.add('selected');
+                    selectedGameId = game.id;
+                    
+                    // Mostrar o jogo selecionado
+                    document.getElementById('gameSelection').style.display = 'none';
+                    document.getElementById('selectedGameContainer').style.display = 'block';
+                    loadSelectedGame(game.id);
+                });
+                
+                gamesGrid.appendChild(gameCard);
+            });
+        }
+
+        function goBackToGameSelection() {
+            document.getElementById('selectedGameContainer').style.display = 'none';
+            document.getElementById('gameSelection').style.display = 'block';
+            selectedGameId = null;
+            
+            // Remover seleção de todos os cards
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.classList.remove('selected');
+            });
+        }
+
+        // ================= CARREGAR JOGO SELECIONADO =================
+        function loadSelectedGame(gameId) {
+            const gameContent = document.getElementById('gameContent');
+            gameContent.innerHTML = '';
+            
+            switch(gameId) {
+                case 1: // Jogo da Memória
+                    loadMemoryGame(gameContent);
+                    break;
+                case 2: // Jogo da Velha
+                    loadTicTacToe(gameContent);
+                    break;
+                case 3: // Sequência Numérica
+                    loadSequenceGame(gameContent);
+                    break;
+                case 4: // Encontre o Emoji
+                    loadEmojiGame(gameContent);
+                    break;
+                case 5: // Quiz Rápido
+                    loadQuizGame(gameContent);
+                    break;
+            }
+        }
+
+        // ---------- JOGO 1: MEMÓRIA ----------
+        function loadMemoryGame(container) {
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #6a11cb; margin-bottom: 20px;">JOGO DA MEMÓRIA</h3>
+                <p style="text-align: center; margin-bottom: 20px;">Encontre todos os pares de emojis iguais!</p>
+                <div class="memory-grid" id="memoryGrid"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-small" onclick="resetMemoryGame()"><i class="fas fa-redo"></i> REINICIAR JOGO</button>
+                    <button class="btn btn-small" onclick="completeMemoryGame()" style="background: #28a745;"><i class="fas fa-check"></i> COMPLETAR JOGO</button>
+                </div>
+            `;
+            
+            // Emojis para o jogo da memória
+            const emojis = ['🎂', '🎁', '🎮', '⭐', '🎉', '❤️', '🎂', '🎁', '🎮', '⭐', '🎉', '❤️'];
+            
+            // Embaralhar emojis
+            const shuffledEmojis = [...emojis].sort(() => Math.random() - 0.5);
+            
+            const memoryGrid = document.getElementById('memoryGrid');
+            memoryGrid.innerHTML = '';
+            memoryCards = [];
+            memoryFlippedCards = [];
+            
+            shuffledEmojis.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'memory-card';
+                card.dataset.emoji = emoji;
+                card.dataset.index = index;
+                card.innerHTML = '<div class="card-back">?</div>';
+                
+                card.addEventListener('click', function() {
+                    flipMemoryCard(this);
+                });
+                
+                memoryGrid.appendChild(card);
+                memoryCards.push(card);
+            });
+        }
+
+        function flipMemoryCard(card) {
+            // Não permitir virar mais de 2 cartas ou cartas já combinadas
+            if (memoryFlippedCards.length >= 2 || card.classList.contains('flipped') || card.classList.contains('matched')) {
+                return;
+            }
+            
+            // Virar a carta
+            card.classList.add('flipped');
+            card.innerHTML = card.dataset.emoji;
+            memoryFlippedCards.push(card);
+            
+            // Se duas cartas estão viradas, verificar se combinam
+            if (memoryFlippedCards.length === 2) {
+                setTimeout(checkMemoryMatch, 800);
+            }
+        }
+
+        function checkMemoryMatch() {
+            const card1 = memoryFlippedCards[0];
+            const card2 = memoryFlippedCards[1];
+            
+            if (card1.dataset.emoji === card2.dataset.emoji) {
+                // Combinaram!
+                card1.classList.add('matched');
+                card2.classList.add('matched');
+                
+                // Verificar se o jogo acabou
+                const allMatched = Array.from(memoryCards).every(card => card.classList.contains('matched'));
+                if (allMatched) {
+                    setTimeout(() => {
+                        alert('🎉 Parabéns! Você completou o jogo da memória!');
+                        completeGame();
+                    }, 500);
+                }
+            } else {
+                // Não combinaram, virar de volta
+                card1.classList.remove('flipped');
+                card2.classList.remove('flipped');
+                card1.innerHTML = '<div class="card-back">?</div>';
+                card2.innerHTML = '<div class="card-back">?</div>';
+            }
+            
+            memoryFlippedCards = [];
+        }
+
+        function resetMemoryGame() {
+            loadSelectedGame(1);
+        }
+
+        function completeMemoryGame() {
+            completeGame();
+        }
+
+        // ---------- JOGO 2: JOGO DA VELHA ----------
+        function loadTicTacToe(container) {
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #2575fc; margin-bottom: 20px;">JOGO DA VELHA</h3>
+                <p style="text-align: center; margin-bottom: 20px;">Você é o X. Vença o computador (O) para ganhar!</p>
+                <div class="tic-tac-toe-grid" id="ticTacToeGrid"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p id="ticTacToeStatus">Sua vez! Você é o <strong>X</strong></p>
+                    <button class="btn btn-small" onclick="resetTicTacToe()"><i class="fas fa-redo"></i> REINICIAR JOGO</button>
+                    <button class="btn btn-small" onclick="completeTicTacToe()" style="background: #28a745;"><i class="fas fa-check"></i> COMPLETAR JOGO</button>
+                </div>
+            `;
+            
+            const ticTacToeGrid = document.getElementById('ticTacToeGrid');
+            ticTacToeGrid.innerHTML = '';
+            ticTacToeBoard = ['', '', '', '', '', '', '', '', ''];
+            ticTacToeCurrentPlayer = 'X';
+            
+            document.getElementById('ticTacToeStatus').textContent = 'Sua vez! Você é o X';
+            
+            for (let i = 0; i < 9; i++) {
+                const cell = document.createElement('div');
+                cell.className = 'tic-tac-toe-cell';
+                cell.dataset.index = i;
+                
+                cell.addEventListener('click', function() {
+                    makeTicTacToeMove(i);
+                });
+                
+                ticTacToeGrid.appendChild(cell);
+            }
+        }
+
+        function makeTicTacToeMove(index) {
+            // Verificar se a célula está vazia e se é a vez do jogador
+            if (ticTacToeBoard[index] !== '' || ticTacToeCurrentPlayer !== 'X') {
+                return;
+            }
+            
+            // Fazer a jogada do jogador
+            ticTacToeBoard[index] = 'X';
+            const cell = document.querySelector(`.tic-tac-toe-cell[data-index="${index}"]`);
+            cell.textContent = 'X';
+            cell.classList.add('x');
+            
+            // Verificar se o jogador ganhou
+            if (checkTicTacToeWinner('X')) {
+                document.getElementById('ticTacToeStatus').innerHTML = '<span style="color: #28a745;">🎉 Você ganhou!</span>';
+                setTimeout(() => {
+                    completeGame();
+                }, 1500);
+                return;
+            }
+            
+            // Verificar se deu empate
+            if (ticTacToeBoard.every(cell => cell !== '')) {
+                document.getElementById('ticTacToeStatus').innerHTML = '<span style="color: #ff9d00;">Empate!</span>';
+                setTimeout(() => {
+                    completeGame();
+                }, 1500);
+                return;
+            }
+            
+            // Mudar para o jogador computador
+            ticTacToeCurrentPlayer = 'O';
+            document.getElementById('ticTacToeStatus').textContent = 'Vez do computador (O)...';
+            
+            // Computador faz sua jogada após um pequeno delay
+            setTimeout(makeComputerMove, 800);
+        }
+
+        function makeComputerMove() {
+            // Encontrar células vazias
+            const emptyCells = ticTacToeBoard
+                .map((cell, index) => cell === '' ? index : null)
+                .filter(index => index !== null);
+            
+            if (emptyCells.length === 0) return;
+            
+            // Escolher uma célula aleatória
+            const randomIndex = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            
+            // Fazer a jogada do computador
+            ticTacToeBoard[randomIndex] = 'O';
+            const cell = document.querySelector(`.tic-tac-toe-cell[data-index="${randomIndex}"]`);
+            cell.textContent = 'O';
+            cell.classList.add('o');
+            
+            // Verificar se o computador ganhou
+            if (checkTicTacToeWinner('O')) {
+                document.getElementById('ticTacToeStatus').innerHTML = '<span style="color: #ff4e50;">O computador ganhou!</span>';
+                setTimeout(() => {
+                    completeGame();
+                }, 1500);
+                return;
+            }
+            
+            // Verificar se deu empate
+            if (ticTacToeBoard.every(cell => cell !== '')) {
+                document.getElementById('ticTacToeStatus').innerHTML = '<span style="color: #ff9d00;">Empate!</span>';
+                setTimeout(() => {
+                    completeGame();
+                }, 1500);
+                return;
+            }
+            
+            // Voltar para o jogador humano
+            ticTacToeCurrentPlayer = 'X';
+            document.getElementById('ticTacToeStatus').textContent = 'Sua vez! Você é o X';
+        }
+
+        function checkTicTacToeWinner(player) {
+            const winPatterns = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // Linhas
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // Colunas
+                [0, 4, 8], [2, 4, 6]             // Diagonais
+            ];
+            
+            return winPatterns.some(pattern => {
+                return pattern.every(index => ticTacToeBoard[index] === player);
+            });
+        }
+
+        function resetTicTacToe() {
+            loadSelectedGame(2);
+        }
+
+        function completeTicTacToe() {
+            completeGame();
+        }
+
+        // ---------- JOGO 3: SEQUÊNCIA NUMÉRICA ----------
+        function loadSequenceGame(container) {
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #ff4e50; margin-bottom: 20px;">SEQUÊNCIA NUMÉRICA</h3>
+                <p style="text-align: center; margin-bottom: 20px;">Memorize e repita a sequência de números!</p>
+                <div class="sequence-container">
+                    <div class="sequence-display" id="sequenceDisplay"></div>
+                    <div class="sequence-buttons" id="sequenceButtons"></div>
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p id="sequenceStatus">Clique em "Iniciar" para começar!</p>
+                    <button class="btn btn-small" onclick="startSequenceGame()" id="startSequenceBtn"><i class="fas fa-play"></i> INICIAR JOGO</button>
+                    <button class="btn btn-small" onclick="completeSequenceGame()" style="background: #28a745;"><i class="fas fa-check"></i> COMPLETAR JOGO</button>
+                </div>
+            `;
+            
+            // Criar botões de números
+            const sequenceButtons = document.getElementById('sequenceButtons');
+            sequenceButtons.innerHTML = '';
+            
+            for (let i = 1; i <= 6; i++) {
+                const button = document.createElement('button');
+                button.className = 'sequence-btn';
+                button.textContent = i;
+                button.dataset.number = i;
+                
+                button.addEventListener('click', function() {
+                    handleSequenceInput(parseInt(this.dataset.number));
+                });
+                
+                sequenceButtons.appendChild(button);
+            }
+            
+            sequencePattern = [];
+            sequencePlayerInput = [];
+        }
+
+        function startSequenceGame() {
+            document.getElementById('startSequenceBtn').style.display = 'none';
+            document.getElementById('sequenceStatus').textContent = 'Memorize a sequência...';
+            
+            // Gerar uma nova sequência
+            sequencePattern = [];
+            for (let i = 0; i < 4; i++) {
+                sequencePattern.push(Math.floor(Math.random() * 6) + 1);
+            }
+            
+            sequencePlayerInput = [];
+            
+            // Mostrar a sequência
+            showSequence();
+        }
+
+        function showSequence() {
+            const sequenceDisplay = document.getElementById('sequenceDisplay');
+            sequenceDisplay.textContent = '';
+            
+            let i = 0;
+            const interval = setInterval(() => {
+                if (i < sequencePattern.length) {
+                    sequenceDisplay.textContent = sequencePattern[i];
+                    i++;
+                } else {
+                    clearInterval(interval);
+                    sequenceDisplay.textContent = 'Sua vez!';
+                    document.getElementById('sequenceStatus').textContent = 'Agora repita a sequência!';
+                }
+            }, 800);
+        }
+
+        function handleSequenceInput(number) {
+            sequencePlayerInput.push(number);
+            
+            // Verificar se o input está correto até agora
+            for (let i = 0; i < sequencePlayerInput.length; i++) {
+                if (sequencePlayerInput[i] !== sequencePattern[i]) {
+                    // Erro!
+                    document.getElementById('sequenceStatus').innerHTML = '<span style="color: #ff4e50;">❌ Sequência incorreta! Tente novamente.</span>';
+                    setTimeout(() => {
+                        startSequenceGame();
+                    }, 1500);
+                    return;
+                }
+            }
+            
+            // Verificar se completou a sequência
+            if (sequencePlayerInput.length === sequencePattern.length) {
+                document.getElementById('sequenceStatus').innerHTML = '<span style="color: #28a745;">🎉 Correto! Você completou a sequência!</span>';
+                setTimeout(() => {
+                    completeGame();
+                }, 1500);
+            } else {
+                document.getElementById('sequenceStatus').textContent = `Continue... ${sequencePlayerInput.length}/${sequencePattern.length}`;
+            }
+        }
+
+        function completeSequenceGame() {
+            completeGame();
+        }
+
+        // ---------- JOGO 4: ENCONTRE O EMOJI ----------
+        function loadEmojiGame(container) {
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #28a745; margin-bottom: 20px;">ENCONTRE O EMOJI</h3>
+                <p style="text-align: center; margin-bottom: 20px;">Encontre o emoji <span id="emojiTarget" style="font-size: 1.5rem;"></span> entre os abaixo!</p>
+                <div class="emoji-grid" id="emojiGrid"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <p id="emojiStatus">Selecione o emoji correto!</p>
+                    <button class="btn btn-small" onclick="resetEmojiGame()"><i class="fas fa-redo"></i> NOVO EMOJI</button>
+                    <button class="btn btn-small" onclick="completeEmojiGame()" style="background: #28a745;"><i class="fas fa-check"></i> COMPLETAR JOGO</button>
+                </div>
+            `;
+            
+            // Emojis possíveis
+            const emojis = ['🎂', '🎁', '🎮', '⭐', '🎉', '❤️', '🏆', '🎈', '👑'];
+            
+            // Escolher um emoji aleatório para encontrar
+            emojiToFind = emojis[Math.floor(Math.random() * emojis.length)];
+            document.getElementById('emojiTarget').textContent = emojiToFind;
+            
+            // Criar grid de emojis
+            const emojiGrid = document.getElementById('emojiGrid');
+            emojiGrid.innerHTML = '';
+            
+            // Criar lista de emojis (incluindo o alvo várias vezes)
+            const gameEmojis = [emojiToFind, emojiToFind];
+            while (gameEmojis.length < 9) {
+                const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+                if (randomEmoji !== emojiToFind) {
+                    gameEmojis.push(randomEmoji);
+                }
+            }
+            
+            // Embaralhar emojis
+            const shuffledEmojis = [...gameEmojis].sort(() => Math.random() - 0.5);
+            
+            shuffledEmojis.forEach((emoji, index) => {
+                const card = document.createElement('div');
+                card.className = 'emoji-card';
+                card.textContent = emoji;
+                card.dataset.emoji = emoji;
+                
+                card.addEventListener('click', function() {
+                    // Remover seleção de todos os cards
+                    document.querySelectorAll('.emoji-card').forEach(card => {
+                        card.classList.remove('selected-emoji');
+                    });
+                    
+                    // Selecionar este card
+                    this.classList.add('selected-emoji');
+                    
+                    // Verificar se é o emoji correto
+                    if (this.dataset.emoji === emojiToFind) {
+                        document.getElementById('emojiStatus').innerHTML = '<span style="color: #28a745;">🎉 Correto! Você encontrou o emoji!</span>';
+                        setTimeout(() => {
+                            completeGame();
+                        }, 1500);
+                    } else {
+                        document.getElementById('emojiStatus').innerHTML = '<span style="color: #ff4e50;">❌ Não é esse! Tente novamente.</span>';
+                        setTimeout(() => {
+                            this.classList.remove('selected-emoji');
+                            document.getElementById('emojiStatus').textContent = 'Selecione o emoji correto!';
+                        }, 1000);
+                    }
+                });
+                
+                emojiGrid.appendChild(card);
+            });
+        }
+
+        function resetEmojiGame() {
+            loadSelectedGame(4);
+        }
+
+        function completeEmojiGame() {
+            completeGame();
+        }
+
+        // ---------- JOGO 5: QUIZ RÁPIDO ----------
+        function loadQuizGame(container) {
+            // Perguntas do quiz sobre Valquíria
+            quizQuestions = [
+                {
+                    question: "Qual é a coisa mais bonita em Valquíria?",
+                    options: ["Seu sorriso", "Seus olhos", "Seu coração", "Tudo nela"],
+                    correct: 3 // Tudo nela
+                },
+                {
+                    question: "Quantas vezes eu penso em Valquíria por dia?",
+                    options: ["1 vez", "3 vezes", "10 vezes", "O dia todo"],
+                    correct: 3 // O dia todo
+                },
+                {
+                    question: "O que eu mais gosto em Valquíria?",
+                    options: ["Sua personalidade", "Sua beleza", "Sua bondade", "Tudo"],
+                    correct: 3 // Tudo
+                }
+            ];
+            
+            quizCurrentQuestion = 0;
+            quizScore = 0;
+            
+            container.innerHTML = `
+                <h3 style="text-align: center; color: #ff9d00; margin-bottom: 20px;">QUIZ SOBRE VALQUÍRIA</h3>
+                <p style="text-align: center; margin-bottom: 20px;">Responda corretamente às perguntas sobre ela!</p>
+                <div id="quizContent"></div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-small" onclick="completeQuizGame()" style="background: #28a745;"><i class="fas fa-check"></i> COMPLETAR JOGO</button>
+                </div>
+            `;
+            
+            loadQuizQuestion();
+        }
+
+        function loadQuizQuestion() {
+            const quizContent = document.getElementById('quizContent');
+            
+            if (quizCurrentQuestion >= quizQuestions.length) {
+                // Quiz completo
+                quizContent.innerHTML = `
+                    <div style="text-align: center; padding: 30px;">
+                        <h4 style="color: #28a745;">🎉 Quiz Completo!</h4>
+                        <p>Você acertou ${quizScore} de ${quizQuestions.length} perguntas!</p>
+                        <button class="btn btn-small" onclick="completeGame()">CONTINUAR</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            const question = quizQuestions[quizCurrentQuestion];
+            
+            quizContent.innerHTML = `
+                <div class="quiz-question">${question.question}</div>
+                <div class="quiz-options" id="quizOptions"></div>
+            `;
+            
+            const quizOptions = document.getElementById('quizOptions');
+            quizOptions.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'quiz-option';
+                optionDiv.textContent = option;
+                optionDiv.dataset.index = index;
+                
+                optionDiv.addEventListener('click', function() {
+                    // Remover seleção de todas as opções
+                    document.querySelectorAll('#quizOptions .quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Selecionar esta opção
+                    this.classList.add('selected');
+                    
+                    // Verificar resposta após um pequeno delay
+                    setTimeout(() => {
+                        const selectedIndex = parseInt(this.dataset.index);
+                        if (selectedIndex === question.correct) {
+                            quizScore++;
+                        }
+                        
+                        // Próxima pergunta
+                        quizCurrentQuestion++;
+                        loadQuizQuestion();
+                    }, 800);
+                });
+                
+                quizOptions.appendChild(optionDiv);
+            });
+        }
+
+        function completeQuizGame() {
+            completeGame();
+        }
+
+        // ================= COMPLETAR UM JOGO =================
+        function completeGame() {
+            gamesCompleted++;
+            updateProgress();
+            
+            // Verificar se completou pelo menos um jogo
+            if (gamesCompleted >= 1) {
+                // Voltar para seleção de jogos
+                goBackToGameSelection();
+                
+                // Mostrar mensagem de sucesso
+                alert(`🎉 Jogo completado! Você já completou ${gamesCompleted} jogo(s).`);
+                
+                // Avançar para o próximo nível se completou pelo menos um jogo
+                if (gamesCompleted >= 1) {
+                    currentLevel = 4;
+                    showLevel('levelFinal');
+                }
+            }
+        }
+
+        // ================= NÍVEL FINAL =================
+        function finalConfirmation() {
+            const confirmationInput = document.getElementById('confirmation').value;
+            
+            if (confirmationInput.toUpperCase() === 'SIM') {
+                currentLevel = 5;
+                showLevel('finalMessage');
+            } else {
+                // Efeito visual de erro
+                const confirmationField = document.getElementById('confirmation');
+                confirmationField.style.borderColor = '#ff4e50';
+                confirmationField.style.boxShadow = '0 0 0 3px rgba(255, 78, 80, 0.2)';
+                setTimeout(() => {
+                    confirmationField.style.borderColor = '#e0e0e0';
+                    confirmationField.style.boxShadow = 'none';
+                }, 1000);
+            }
+        }
+
+        // ================= REINICIAR/SAIR =================
+        function restartGame() {
+            // Resetar todas as variáveis
+            currentLevel = 1;
+            gamesCompleted = 0;
+            selectedGameId = null;
+            
+            // Resetar campos
+            document.getElementById('password').value = '';
+            document.getElementById('confirmation').value = '';
+            
+            // Mostrar nível 1
+            showLevel('level1');
+        }
+
+        function exitGame() {
+            if (confirm("Tem certeza que deseja sair da Jornada do Aniversário?")) {
+                document.body.innerHTML = `
+                    <div class="container" style="text-align: center; padding: 60px;">
+                        <h1 style="color: var(--primary);">🎁 Obrigado por jogar! 🎁</h1>
+                        <p style="font-size: 1.3rem; margin: 20px 0;">Espero que tenha gostado da experiência!</p>
+                        <p style="color: #666;">Atualize a página para jogar novamente.</p>
+                        <div style="margin-top: 40px;">
+                            <button class="btn" onclick="location.reload()"><i class="fas fa-redo"></i> JOGAR NOVAMENTE</button>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // ================= INICIALIZAR =================
+        document.addEventListener('DOMContentLoaded', function() {
+            updateProgress();
+        });
+    </script>
+</body>
+</html>
